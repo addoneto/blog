@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Adm</title>
+
+    <link rel="stylesheet" href="../styles/adm.css">
+</head>
+<body>
+    <main>
+        <h1>Públicar & Alterar Posts</h1>
+
+        <form id="postform" method="post"></form>
+            <div id="options">
+                <input type="radio" name="option" value="publicar" id="postCheck" checked>
+                <label for="publicar">Publicar</label>
+
+                <input type="radio" name="option" value="alterar" id="updateCheck">
+                <label for="alterar">Alterar</label><br>
+            </div>
+
+            <div id="postIdContainer"> </div>
+
+            <input type="password" placeholder="Senha" id="password" required> <br>
+
+            <input type="text" placeholder="Título" id="title"> <br>
+            <input type="text" placeholder="Tags" id="tags"> <br>
+            <textarea id="postContent"></textarea> <br>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
+
+    <script src="../scripts/adm.js"></script>
+</body>
+</html>

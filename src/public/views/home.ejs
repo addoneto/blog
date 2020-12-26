@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+<body>
+    <h1>PÁGINA INICIAL</h1>
+    <% articles.forEach(function(article) { %>
+        <article>
+            <h1><%= article.title %></h1>
+            <h3><%= article.createDate %> | <%= article.updateDate %></h3>
+            <% if(article.tags) article.tags.forEach(tag => { %>
+                <label><%= tag %> </label>
+            <% }); %>
+            <div>
+                <%- article.HTMLcontent %>
+            </div>
+
+            <a href="<%- 'artigos/' + article.urlTitle %>">Ler mais</a>
+        </article>
+    <% }); %>
+    
+</body>
+</html>
