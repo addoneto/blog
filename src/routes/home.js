@@ -7,7 +7,7 @@ const { generate } = require('generate-password');
 router.get('/', async (req, res) => {
     try{
         const articles = await Article.find({}, {}, { sort: { 'createDate' : -1 } }).limit(10).exec();
-        return res.render(path.join(__dirname, '../public/views/home'), {articles: articles});
+        return res.render(path.join(__dirname, '../public/views/home'), {tagFilter: '',articles: articles});
     }catch(err){
         return res.status(500).render(path.join(__dirname, '../public/views/500'));
     }
@@ -64,6 +64,5 @@ router.get('/logout', (req, res) => {
 
     return res.redirect('/login');
 });
-
 
 module.exports = router;

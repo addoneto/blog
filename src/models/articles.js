@@ -18,6 +18,9 @@ const ArticleSchema = new mongoose.Schema({
     tags: {
         type: [String],
     },
+    banner: {
+        type: String,
+    },
     description: {
         type: String,
         required: true,
@@ -28,9 +31,6 @@ const ArticleSchema = new mongoose.Schema({
     },
     HTMLcontent: {
         type: String,
-    },
-    imagesUrl: {
-        type: [String],
     },
     createDate: {
         type: Date,
@@ -47,7 +47,7 @@ ArticleSchema.pre('save', function(next) {
     this.HTMLcontent = dompurify.sanitize(marked(this.markdownContent));
     this.updateDate = Date.now();
 
-    //if(!description) TODO: PICK FIRST PARAGRAPH
+    if(!this.description) this.description = markdown.split('')[0];
 
     next();
 });

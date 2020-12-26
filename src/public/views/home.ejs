@@ -3,24 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME</title>
+    <title>addo</title>
+
+    <link rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
-    <h1>PÁGINA INICIAL</h1>
-    <% articles.forEach(function(article) { %>
-        <article>
-            <h1><%= article.title %></h1>
-            <h3><%= article.createDate %> | <%= article.updateDate %></h3>
-            <% if(article.tags) article.tags.forEach(tag => { %>
-                <label><%= tag %> </label>
-            <% }); %>
-            <div>
-                <%- article.HTMLcontent %>
-            </div>
+    <header>
+        <h1><a href="/">ADDO</a></h1>
+    </header>
 
-            <a href="<%- 'artigos/' + article.urlTitle %>">Ler mais</a>
-        </article>
-    <% }); %>
-    
+    <main>
+        <div id="content">
+            <h2><%= tagFilter %></h2>
+
+            <% articles.forEach(function(article) { %>
+            <article>
+                <% if(article.banner){ %>
+                    <div class="img" style="background-image: url(<%- article.banner %>)"></div>
+                <% } %>
+                <h1><%= article.title %></h1>
+                <h2><%= article.createDate %></h2>
+                <div class="tags">
+                    <% if(article.tags) article.tags.forEach(tag => { %>
+                        <a href="<%-'/tags/' + tag %>"><%= tag %></a>
+                    <% }); %>
+                </div>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <button><a href="<%-'/artigos/' + article.slug%>">CONTINUE LENDO</a></button>
+            </article>
+            <% }); %>
+        </div>
+    </main>
+
+    <footer>
+        <h4>
+            Copyright © 
+            <script>document.write(new Date().getFullYear())</script>2020
+            Addo. All Rights Reserverd
+        </h4>
+    </footer>
 </body>
 </html>
