@@ -1,21 +1,19 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
-const path = require('path');
 const app = express();
+const path = require('path');
 
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 require('dotenv/config');
 require('./database');
 
 // MIDDLEWARES
-app.use(cookieParser(null, {maxAge: 21600,  sameSite: true, httpOnly: true})); // secure: true
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
 // ROUTES
 //app.use('*', statusUpdate);
-app.use('/', require('./routes/home'));
+app.use('/', require('./routes/root'));
 app.use('/api', require('./routes/api'));
 app.use('/artigos', require('./routes/articles'));
 app.use('/tags', require('./routes/tags'));

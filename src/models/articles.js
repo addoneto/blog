@@ -6,6 +6,23 @@ const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const dompurify = createDOMPurify(new JSDOM().window);
 
+const dateConverter = require('../date');
+
+const completeDate = new mongoose.Schema({
+    complete: {
+        type: Date,
+        default: Date.now,
+    },
+    formated: {
+        type: String,
+    }
+});
+
+completeDate.pre('save', next => {
+    this.formated = dateConverter.ptFormat(this.complete);
+    next();
+});
+
 const ArticleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -33,19 +50,19 @@ const ArticleSchema = new mongoose.Schema({
         type: String,
     },
     createDate: {
-        type: Date,
-        default: Date.now,
+        type: completeDate,
+        required: true,
     },
     updateDate: {
-        type: Date,
-        default: Date.now,
+        type: completeDate,
+        required: true,
     }
 });
 
-ArticleSchema.pre('save', function(next) {
+ArticleSchema.pre('save', next => {
     this.slug = slugify(this.title, {lower:true, strict: true});
     this.HTMLcontent = dompurify.sanitize(marked(this.markdownContent));
-    this.updateDate = Date.now();
+    this.updateDate = {complete: Date.now()};
 
     if(!this.description) this.description = markdown.split('')[0];
 

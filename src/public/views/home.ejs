@@ -22,7 +22,7 @@
                     <div class="img" style="background-image: url(<%- article.banner %>)"></div>
                 <% } %>
                 <h1><%= article.title %></h1>
-                <h2><%= article.createDate %></h2>
+                <h2><%= article.createDate.formated %></h2>
                 <div class="tags">
                     <% if(article.tags) article.tags.forEach(tag => { %>
                         <a href="<%-'/tags/' + tag %>"><%= tag %></a>

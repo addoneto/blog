@@ -1,0 +1,6 @@
+{
+    "httpOnly":true,
+    "maxAge": 180,
+    "sameSite": "strict",
+    "secure": false
+}

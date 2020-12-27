@@ -14,8 +14,7 @@ router.post('/article', async (req, res) => {
     const data = {title: req.body.title,
             tags: req.body.tags,
             description: req.body.description,
-            markdown: req.body.markdown,
-            imagesUri: req.body.imagesUri || null};
+            markdown: req.body.markdown};
 
     try{
         const newArticle = await Article.create(data);

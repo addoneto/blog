@@ -13,20 +13,14 @@ router.get('/', (req, res) => {
 
 router.get('/:title', async (req, res) => {
     try{
-        const article = await Article.findOne({urlTitle: req.params.title}).exec();
+        let article = await Article.findOne({slug: req.params.title}).exec();
         if(article == null)
             return res.status(404).render(path.join(__dirname, '../public/views/404'), {});
         
-        const data = {
-            title: article.title,
-            markdownContent: article.markdownContent,
-            imagesUrl: article.imagesUrl,
-            tags: article.tags,
-            createDate: dateConverter.ptFormat(article.createDate),
-            updateDate: dateConverter.ptFormat(article.updateDate),
-        }
+        article.createDate = dateConverter.ptFormat(article.createDate);
+        article.pdateDate = dateConverter.ptFormat(article.updateDate);
 
-        res.render(path.join(__dirname, '../public/views/article'), {data: data});
+        res.render(path.join(__dirname, '../public/views/article'), {data: article});
     }catch(err){
         return res.status(500).send('Unable to acess article: ' + req.params.title);
     }
