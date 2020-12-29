@@ -19,10 +19,12 @@ body{
     height: 100vh;
     margin:0;
     padding: 0;
+
+    display:flex;
+    flex-direction: column;
 }
 
 header{
-    /* position: absolute; */
     width: 100%;
     padding: 1rem;
 }
@@ -40,6 +42,7 @@ header h1, header h1 a{
 main{
     width: 100%;
     height: fit-content;
+    margin-bottom: 5rem;
 }
 
 main #content{
@@ -140,7 +143,7 @@ footer{
     max-width: 100%;
     background-color: rgb(250, 250, 250);
     padding: .25em 0em .25em;
-    margin-top: 5rem;
+    margin-top: auto;
 }
 footer h4{
     font-family: 'Roboto Slab', serif;
