@@ -10,11 +10,29 @@ const { generate } = require('generate-password');
 
 router.get('/', async (req, res) => {
     try{
-        //const articles = await Article.find({}, {}, { sort: { 'createDate' : {complete : -1 }} }).limit(10).exec();
-        const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).limit(10).exec();
+        //const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).limit(10).exec();
+        const articles = await Article.find({}).exec();
         return res.render(path.join(__dirname, '../public/views/home'), {tagFilter: '',articles: articles});
     }catch(err){
-        return res.status(500).render(path.join(__dirname, '../public/views/500'));
+        return res.status(500).render(path.join(__dirname, '../public/views/http-error'), {code: '500', message:"Algo de errado ocorreu no Servidor 😦"});
+    }
+});
+
+
+
+router.get('/tags/', (req, res) => {
+    return res.status(400).render(path.join(__dirname, '../public/views/http-error'), {code: '400', message:"Qual a tag mesmo ?! 🤔"});
+});
+
+router.get('/tags/:tag', async (req, res) => {
+    const tag = req.params.tag;
+
+    try{
+        //const articles = await Article.find({ tags: { "$in" : [tag]}}).exec();
+        const articles = await Article.find({ tags: tag }).exec();
+        return res.render(path.join(__dirname, '../public/views/home'), {tagFilter: `Filtro: ${tag}`,articles: articles});
+    }catch(err){
+        return res.status(500).render(path.join(__dirname, '../public/views/http-error'), {code: '500', message:"Algo de errado ocorreu no Servidor 😦"});
     }
 });
 
@@ -57,6 +75,7 @@ router.get('/logout', (req, res) => {
         //  clear any current cookie
         res.setHeader('Set-Cookie', "session_id=clear;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT");
         console.log('\x1b[31m%s\x1b[0m', `Cookie clear: ${global.currentSessionID}`);
+        global.currentSessionID = null;
     } 
 
     return res.redirect('/login');

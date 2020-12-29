@@ -23,12 +23,15 @@
                 <% } %>
                 <h1><%= article.title %></h1>
                 <h2><%= article.createDate.formated %></h2>
+
                 <div class="tags">
                     <% if(article.tags) article.tags.forEach(tag => { %>
                         <a href="<%-'/tags/' + tag %>"><%= tag %></a>
                     <% }); %>
                 </div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+
+                <p><%= article.description %></p>
+
                 <button><a href="<%-'/artigos/' + article.slug%>">CONTINUE LENDO</a></button>
             </article>
             <% }); %>
@@ -38,7 +41,7 @@
     <footer>
         <h4>
             Copyright © 
-            <script>document.write(new Date().getFullYear())</script>2020
+            <script>document.write(new Date().getFullYear())</script>
             Addo. All Rights Reserverd
         </h4>
     </footer>

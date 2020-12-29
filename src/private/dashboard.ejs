@@ -5,33 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Adm</title>
 
-    <link rel="stylesheet" href="../styles/adm.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body{
+            width: 100vw;
+            max-width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-image: linear-gradient(to top, #3a317f, #453b8f, #50459f, #5c50af, #675bc0);
+            font-family: 'Open Sans', sans-serif;
+        }
+        #api-box{
+            width: 80vw;
+            height: 80vh;
+            background-color: #282925;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 5px 40px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+        }
+        #send-container{
+            width: 40%;
+            height: 100%;
+            border-right: 1px solid #6b6c6a;
+            overflow: hidden;
+        }
+        #send-container #top-nav{
+            width: 100%;
+            height: 10%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #send-container #top-nav select, #top-nav button{
+            width: auto;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 1rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+        }
+        #send-container #top-nav #url input{
+            font-family: 'Open Sans', sans-serif;
+            border: none;
+            padding: .5rem;
+        }
+        #send-container #top-nav #url #base-url{
+            background-color: #a190d6;
+            border-radius: 3px;
+            color: white;
+        }
+        #send-container #top-nav button{
+            background-color: white;
+            padding: 1rem 2rem 1rem;
+            transition: .2s;
+            right: 0;
+        }
+        #send-container #top-nav button:hover{
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+        #send-container #data textarea{
+            width: 100%;
+            max-height: 100%;
+            box-sizing: border-box;
+            background-color: transparent;
+            font-family: 'Share Tech Mono', monospace;
+            color: white;
+            font-size: 1rem;
+            padding: 1rem;
+            border: 0;
+        }
+        #response-box{
+            width: 60%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+        #top-res{
+            width: 100%;
+            height: 10%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #top-res #htppStatus{
+            font-family: 'Open Sans', sans-serif;
+            background-color: #5449a4;
+            color: white;
+            width: fit-content;
+            padding: .7rem;
+            border-radius: 5px;
+        }
+        #htppStatus label:first-of-type{
+            font-weight: 600;
+        }
+
+        #response-box pre{
+            box-sizing: border-box;
+            padding: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: rgb(50, 50, 50);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #adaead; 
+            border-radius: 2px;
+        }
+        select:focus, input:focus, button:focus,textarea:focus{outline: none;}
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Públicar & Alterar Posts</h1>
+        <div id="api-box">
+            <div id="send-container">
+                <div id="top-nav">
+                    <select id="methods">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+    
+                    <div id="url">
+                        <input type="text" id="base-url">
+                        <input type="text" id="path" placeholder="path...">
+                    </div>
 
-        <form id="postform" method="post"></form>
-            <div id="options">
-                <input type="radio" name="option" value="publicar" id="postCheck" checked>
-                <label for="publicar">Publicar</label>
+                    <button id="send">ENVIAR</button>
+                </div>
 
-                <input type="radio" name="option" value="alterar" id="updateCheck">
-                <label for="alterar">Alterar</label><br>
+                <div id="data">
+                    <textarea rows="40"></textarea>
+                </div>
             </div>
+            
+            <div id="response-box">
+                <div id="top-res">
+                    <div id="htppStatus">
+                        <label></label>
+                        <label></label>
+                    </div>
+                </div>
+                <pre id="jsonResult"></pre>
+            </div>
+        </div>
 
-            <div id="postIdContainer"> </div>
+    <script>
+        document.getElementById('base-url').value = window.location.origin + '/';
 
-            <input type="password" placeholder="Senha" id="password" required> <br>
+        document.getElementById('send').addEventListener('click', async event => {
+            const method = document.getElementById('methods').value;
 
-            <input type="text" placeholder="Título" id="title"> <br>
-            <input type="text" placeholder="Tags" id="tags"> <br>
-            <textarea id="postContent"></textarea> <br>
+            let requestBody;
+            try{
+                requestBody = JSON.parse(document.querySelector('#data textarea').value);
+            }catch(err){
+                requestBody = '';
+            }
 
-            <button type="submit">Enviar</button>
-        </form>
-    </main>
+            const URL = document.getElementById('base-url').value + document.getElementById('path').value;
 
-    <script src="../scripts/adm.js"></script>
+            let options = {
+                method: method,
+                credentials: "same-origin",
+            }
+
+            if(method != 'GET'){
+                options.headers = new Headers({"Content-Type":'application/json'});
+                options.body = JSON.stringify(requestBody);
+            }
+
+            // const options = {
+            //     headers: method != 'GET' ? {'Content-Type':'application/json'} : null,
+            //     body: method != 'GET' ? JSON.stringify(requestBody) : null,
+            // } 
+
+            try{
+                const request = await fetch(URL, options);
+                const jsonResponse = await request.json();
+
+                document.querySelector('#htppStatus label:first-of-type').innerText = request.status;
+                document.querySelector('#htppStatus label:last-of-type').innerText = request.statusText;
+
+                if(jsonResponse)
+                    document.getElementById('jsonResult').innerText = JSON.stringify(jsonResponse.data, null, 4);
+
+                console.log(request.body);
+            }catch(err){
+                document.getElementById('jsonResult').innerText = err;
+                return;
+            }
+        });
+    </script>
 </body>
 </html>

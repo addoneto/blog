@@ -2,23 +2,29 @@ const express = require('express');
 const router = express.Router();
 const Article = require('../models/articles');
 
+const cookie = require('cookie');
+
 router.use((req, res, next) => {
-    const { cookies } = req;
-    if(cookies.session_id == global.currentSessionID)
+    const cookies = cookie.parse(req.header('cookie') || '');
+
+    if(!global.currentSessionID && cookies.session_id != global.currentSessionID)
         return res.status(401).json({message:'Unable to authenticate'});
 
     next();
 });
 
 router.post('/article', async (req, res) => {
-    const data = {title: req.body.title,
-            tags: req.body.tags,
-            description: req.body.description,
-            markdown: req.body.markdown};
+    const data = {
+        title: req.body.title,
+        banner: req.body.banner,
+        tags: req.body.tags,
+        description: req.body.description,
+        markdown: req.body.markdown
+    };
 
     try{
         const newArticle = await Article.create(data);
-        return res.status(201).json({message:'Article created', data: newArticle});
+        return res.status(201).json({message:'Article created!', data: newArticle});
     }catch(err){
         return res.status(500).json({message: 'Failed to create article'});
     }
@@ -43,24 +49,24 @@ router.put('/article', async (req, res) => {
 
     let changeAtributes = {
         title: req.body.title,
+        banner: req.body.banner,
         tags: req.body.tags,
         description: req.body.description,
         markdown: req.body.markdown,
-        imagesUri: req.body.imagesUri || null};
+    };
 
     // remove information not provided so they're not updated as null
     for (let prop in changeAtributes) {
-        if(!changeAtributes[prop])
-            delete changeAtributes[prop];
+        if(!changeAtributes[prop]) delete changeAtributes[prop];
     }
 
     try{
-        const response = await Article.updateOne({ _id: id }, changeAtributes);
+        const response = await Article.updateOne({ _id: id }, { $set: changeAtributes});
 
         if(response.n == 0)
             return res.status(404).json({message: `No documents found with id: ${id}`});
         else if(response.n != 0 && response.nModified != 0)
-            return res.status(200).json({message: `Article Edited (${response.nModified})`});
+            return res.status(200).json({message: `Article(s) Edited (n${response.nModified})`});
 
         return res.end();
     }catch(err){

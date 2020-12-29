@@ -1,8 +1,14 @@
-document.getElementsByTagName('form')[0].addEventListener('submit', async event => {
+const form = document.getElementsByTagName('form')[0];
+
+form.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const data = {username:document.getElementById("user").value,
-            password:document.getElementById("pass").value};
+    const formData = new FormData(form);
+
+    const data = {
+        username:formData.get('user'),
+        password:formData.get('pass')
+    };
     
     const req = {
         method: 'POST',
@@ -15,7 +21,6 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async event 
 
     try{
         const json = await res.json();
-        if(json) 
-            document.getElementsByTagName('pre')[0].innerText = json.message;
+        if(json) document.getElementsByTagName('pre')[0].innerText = json.message;
     }catch(err){}
 });

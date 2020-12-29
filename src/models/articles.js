@@ -1,27 +1,21 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 
+const dateFormater = require('../date');
+
+const slugify = require('slugify');
 const marked = require('marked');
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const dompurify = createDOMPurify(new JSDOM().window);
 
-const dateConverter = require('../date');
-
-const completeDate = new mongoose.Schema({
+const DateSchema = new mongoose.Schema({
     complete: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
-    formated: {
-        type: String,
-    }
+    formated: String,
 });
 
-completeDate.pre('save', next => {
-    this.formated = dateConverter.ptFormat(this.complete);
-    next();
-});
 
 const ArticleSchema = new mongoose.Schema({
     title: {
@@ -34,13 +28,15 @@ const ArticleSchema = new mongoose.Schema({
     },
     tags: {
         type: [String],
+        required: false,
     },
     banner: {
         type: String,
+        required: false,
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
     markdown: {
         type: String,
@@ -48,26 +44,42 @@ const ArticleSchema = new mongoose.Schema({
     },
     HTMLcontent: {
         type: String,
+        require: false,
     },
     createDate: {
-        type: completeDate,
-        required: true,
+        type: DateSchema,
+        default: () => ({}) // Subdocument default
     },
     updateDate: {
-        type: completeDate,
-        required: true,
-    }
+        type: DateSchema,
+        default: () => ({})
+    },
 });
 
-ArticleSchema.pre('save', next => {
+ArticleSchema.pre('save', function(){
     this.slug = slugify(this.title, {lower:true, strict: true});
-    this.HTMLcontent = dompurify.sanitize(marked(this.markdownContent));
-    this.updateDate = {complete: Date.now()};
+    
+    this.HTMLcontent = dompurify.sanitize(marked(this.markdown));
+    if(!this.description) this.description = this.markdown.split('')[0];
 
-    if(!this.description) this.description = markdown.split('')[0];
+    this.createDate.formated = dateFormater.ptFormat(this.createDate.complete);
+    this.updateDate.formated = dateFormater.ptFormat(this.updateDate.complete);
 
-    next();
+    console.log('\x1b[36m%s\x1b[0m', "Article created! " + this._id)
+});
+
+ArticleSchema.pre('updateOne', function() {
+    const now = new Date();
+    this.set({updateDate: {complete: now }});
+    this.set({updateDate: {formated: dateFormater.ptFormat(now) }});
+
+    console.log('\x1b[35m%s\x1b[0m', 'Article updated! ' + this._conditions._id);
+});
+
+ArticleSchema.pre('deleteOne', function() {
+    console.log('\x1b[33m%s\x1b[0m', "Article deleted! " + this._conditions._id);
 });
 
 const Article = mongoose.model('Article', ArticleSchema);
+
 module.exports = Article;
