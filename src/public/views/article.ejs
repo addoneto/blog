@@ -4,20 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= data.title %></title>
+
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/article.css">
+    <link rel="stylesheet" href="../styles/solo-article.css">
 </head>
 <body>
-    <h1><%= data.title %></h1>
-    <h2><%= data.createDate.formated %></h2>
-    <h3>Atualizado: <%= data.updateDate.formated %></h3>
+    <header>
+        <h1><a href="/">ADdo</a></h1>
+    </header>
 
-    <div>   
-        <% if(data.tags) data.tags.forEach(tag => { %>
-            <label><%= tag %> </label>
-        <% }); %>
-    </div>
+    <main>
+        <div id="t-banner" style="background-image: url(<%- data.banner %>)"></div>
+    
+        <div class="bmask">
+            <div id="content">
+                <article>
+                    <h1><%= data.title %></h1>
+                    <h2 class="time-text"><%= data.createDate.formated %></h2>
 
-    <div>
-        <%- data.HTMLcontent %>
-    </div>
+                    <div class="tags">
+                        <% if(data.tags) data.tags.forEach(tag => { %>
+                            <a href="<%-'/tags/' + tag %>"><%= tag %></a>
+                        <% }); %>
+                    </div>
+
+                    <section>
+                        <p><%= data.description %></p>
+
+                        <div>
+                            <%- data.HTMLcontent %>
+                        </div>
+                    </section>
+
+                    <% if(data.createDate.formated != data.updateDate.formated){ %>
+                        <h2 class="time-text">Editado: <%= data.updateDate.formated %></h2>
+                    <% } %>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <h4>
+            Copyright © 
+            <script>document.write(new Date().getFullYear())</script>
+            Addo. All Rights Reserverd
+        </h4>
+    </footer>
 </body>
 </html>

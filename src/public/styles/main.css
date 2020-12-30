@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Castoro&display=swap');
 
-*{
-    box-sizing: border-box;
-}
+*{ box-sizing: border-box; }
 
 :root{
     --title-size: 2rem;
@@ -24,25 +23,41 @@ body{
     flex-direction: column;
 }
 
+/* ======================================================== */
+/* ======================== HEADER ======================== */
+/* ======================================================== */
+
 header{
     width: 100%;
     padding: 1rem;
+    box-shadow: 0px 3px 8px #88888810;
 }
 
 header h1, header h1 a{
-    width: fit-content;
-    font-family: 'Pathway Gothic One', sans-serif;
+    font-family: 'Major Mono Display', monospace;
     font-size: var(--title-size);
-    margin:0;
     color: var(--color1);
     text-decoration: none;
-    /* margin:1rem; */
+
+    width: fit-content;
+    margin:1rem auto 1rem;
+
+    transition: .5s;
 }
+
+header h1 a:hover{
+    color: black;
+    text-shadow: 0px 3px 8px #8888885d;
+}
+
+/* ======================================================== */
+/* ========================= MAIN ========================= */
+/* ======================================================== */
 
 main{
     width: 100%;
     height: fit-content;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 }
 
 main #content{
@@ -52,91 +67,9 @@ main #content{
     transform: translateX(-50%);
 }
 
-main h2{
-    font-family: 'Roboto Slab', serif;
-    font-weight: 400;
-    color: var(--color2);
-}
-
-article{
-    width: 100%;
-    margin-top: 3rem;
-}
-
-article .img{
-    width: 100%;
-    height: 300px;
-    border: 2px solid var(--color3);
-    box-shadow: 0px 3px 8px #88888823;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-article h1{
-    font-family: 'Roboto Slab', serif;
-    font-weight: 400;
-    font-size: 1.75rem;
-    color: var(--color1);
-    margin: 1em 0px 0px;
-}
-
-article h2{
-    font-family: 'Roboto Slab', serif;
-    font-weight: 400;
-    font-size: 1rem;
-    color: var(--color2);
-}
-
-article .tags a{
-    font-family: 'Roboto Slab', serif;
-    font-size: .7rem;
-    background-color: var(--color3);
-    color:var(--color1);
-    padding: .2rem 1rem .2rem;
-    border-radius: 2em;
-    transition: .2s;
-    text-decoration: none;
-}
-
-article .tags a:hover{
-    background-color: var(--color2);
-    color:white;
-    cursor: pointer;
-}
-
-article p{
-    font-family: 'Castoro', serif;
-    text-align: justify;
-    font-size: 1.25rem;
-}
-
-article button{
-    background-color: transparent;
-    border: 2px solid var(--color3);
-    padding: 1em;
-    transition: .2s; 
-}
-
-article button a{
-    font-family: 'Roboto Slab', serif;
-    font-weight: 400;
-    font-size: .75rem;
-    color: #969393;
-    text-decoration: none;
-}
-article button:hover{
-    cursor: pointer;
-    background-color: var(--color3);
-    /* color: #807d7d; */
-    box-shadow: 0px 3px 8px #88888823;
-}
-article button:active{
-    background-color: #c5c2c2;
-    border: 2px solid #c5c2c2;
-    box-shadow: none;
-}
-
-article button:focus{outline: none;}
+/* ======================================================== */
+/* ======================== FOOTER ======================== */
+/* ======================================================== */
 
 footer{
     width: 100vw;
@@ -151,8 +84,12 @@ footer h4{
     text-align: center;
 }
 
+/* ======================================================== */
+/* ======================== SCROLL ======================== */
+/* ======================================================== */
+
 body::-webkit-scrollbar {
-    width: .5vw;
+    width: 8px;
 }
    
 body::-webkit-scrollbar-track {

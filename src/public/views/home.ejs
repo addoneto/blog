@@ -6,10 +6,11 @@
     <title>addo</title>
 
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/article.css">
 </head>
 <body>
     <header>
-        <h1><a href="/">ADDO</a></h1>
+        <h1><a href="/">ADdo</a></h1>
     </header>
 
     <main>
@@ -21,18 +22,20 @@
                 <% if(article.banner){ %>
                     <div class="img" style="background-image: url(<%- article.banner %>)"></div>
                 <% } %>
-                <h1><%= article.title %></h1>
-                <h2><%= article.createDate.formated %></h2>
+                <section class="content-padding">
+                    <h1><%= article.title %></h1>
+                    <h2 class="time-text"><%= article.createDate.formated %></h2>
 
-                <div class="tags">
-                    <% if(article.tags) article.tags.forEach(tag => { %>
-                        <a href="<%-'/tags/' + tag %>"><%= tag %></a>
-                    <% }); %>
-                </div>
+                    <div class="tags">
+                        <% if(article.tags) article.tags.forEach(tag => { %>
+                            <a href="<%-'/tags/' + tag %>"><%= tag %></a>
+                        <% }); %>
+                    </div>
+                
+                    <p class="desc"><%= article.description %></p>
 
-                <p><%= article.description %></p>
-
-                <button><a href="<%-'/artigos/' + article.slug%>">CONTINUE LENDO</a></button>
+                    <a class="read-btn" href="<%-'/artigos/' + article.slug%>">CONTINUE LENDO</a>
+                </section>
             </article>
             <% }); %>
         </div>
