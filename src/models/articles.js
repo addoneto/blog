@@ -60,7 +60,7 @@ ArticleSchema.pre('save', function(){
     this.slug = slugify(this.title, {lower:true, strict: true});
     
     this.HTMLcontent = dompurify.sanitize(marked(this.markdown));
-    if(!this.description) this.description = this.markdown.split('')[0];
+    if(!this.description) this.description = this.markdown.split('\n')[0];
 
     this.createDate.formated = dateFormater.ptFormat(this.createDate.complete);
     this.updateDate.formated = dateFormater.ptFormat(this.updateDate.complete);

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDIT: <%= article.title %></title>
+
+    <link rel="stylesheet" href="../styles/edit.css">
+</head>
+<body onload="start()">
+    <div id="result-box">
+    </div>
+
+    <main>
+        <form method="post">
+            <input type="text" name="title" value="<%- article.title %>" required>
+            
+            <label for="tags">Tags</label>
+            <input type="text" name="tags" value="<%- article.tags %>">
+            
+            <label for="banner">Banner</label>
+            <input type="text" name="banner" value="<%- article.banner %>">
+            <div class="img" style="background-image: url(<%- article.banner %>)"></div>
+            <input type="button" onclick="updateBanner()" value="Fetch img"><br><br>
+
+            <label for="description">Descrição</label>
+            <textarea name="description" required><%- article.description %></textarea>
+
+            <label for="markdown">Corpo</label>
+            <textarea name="markdown" required><%- article.markdown %></textarea>
+
+            <label for="id">ID</label>
+            <input type="text" name="id" required>
+            
+            <button type="submit">Atualizar</button> <br>
+
+            <input type="checkbox" id="check-del" style="width: fit-content;margin-top:4rem">
+            <input type="button" onclick="deleteArticle()" value="DELETE" id="delete-btn">
+        </form>
+    </main>
+
+    <script>
+        const desc = document.querySelector('textarea[name="description"]');
+        const mark = document.querySelector('textarea[name="markdown"]');
+        const form = document.querySelector('form');
+
+        function start(){
+            document.querySelector('input[name="id"]').value = window.location.pathname.slice(6);
+        }
+
+        desc.oninput = function() {
+            desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+        };
+        mark.oninput = function() {
+            mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+        };
+
+        function updateBanner(){
+            const url = document.querySelector('input[name="banner"]').value;
+            document.querySelector('.img').style.backgroundImage = `url(${url})`;
+        }
+    
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            
+            const data = {
+                title: formData.get('title'),
+                tags: formData.get('tags').split(','),
+                banner: formData.get('banner'),
+                description: formData.get('description'),
+                markdown: formData.get('markdown'),
+
+                id: formData.get('id'),
+            };
+
+            const req = {
+                method: 'PUT',
+                headers: {'Content-Type':'application/json'},
+                credentials: "same-origin",
+                body:JSON.stringify(data)
+            };
+
+            sendRequest(req);
+        });
+
+        function deleteArticle(){
+            const req = {
+                method: 'DELETE',
+                headers: {'Content-Type':'application/json'},
+                credentials: "same-origin",
+                body:JSON.stringify({id: document.querySelector('input[name="id"]').value})
+            };
+
+            if(document.querySelector('#check-del').checked) sendRequest(req);
+        }
+
+        async function sendRequest(request){
+            const res = await fetch('/api/article', request);
+            const json = await res.json();
+            messageBox(json.message);
+        }
+
+        function messageBox(msg){
+            const resultDiv = document.createElement('div');
+            resultDiv.classList.add("msg-box");
+            resultDiv.innerText = msg;
+            document.querySelector('#result-box').appendChild(resultDiv);
+
+            setTimeout(() => {
+                resultDiv.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

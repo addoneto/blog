@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap');
+
+:root{
+    --title-size: 2rem;
+    --color1: #363434;
+    --color2: #b3aeae;
+    --color3: #dddcdc;
+}
+main{
+    width: 50%;
+    margin: auto;
+    font-family: 'Roboto Slab', serif;
+}
+input:focus, textarea:focus {outline: 0;border-color: #b3aeae;}
+input, textarea{
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #dddcdc;
+    transition: .2s;
+}
+input{
+    font-family: 'Roboto Slab', serif;
+    margin-bottom: 2rem;
+}
+input[name="title"]{
+    margin-top:2rem;
+    font-size: 1.75rem;
+    color: var(--color1);
+}
+#delete-btn{
+    color: white;
+    background-color: rgb(182, 56, 56);
+    width: fit-content;
+    border: 0;
+    border-radius: 3px;
+    padding: .5rem 2rem .5rem;
+}
+button{
+    border-radius: 3px;
+    padding: .5rem 2rem .5rem;
+}
+textarea{
+    font-family: 'Castoro', serif;
+    text-align: justify;
+    font-size: 1.25rem;
+    margin:1rem 0 2rem;
+    /* overflow: hidden; */
+}
+.img { 
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--color3);
+    box-shadow: 0px 3px 8px #88888823;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#result-box{
+    position: fixed;
+    top: 50;
+    left: 50;
+    width: 15%;
+    height: fit-content;
+    font-family: 'Roboto Slab', serif;
+}
+.msg-box{
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: .7rem;
+}
+#body-preview .spacer{
+    width: 100%;
+    height: 2px;
+    background-color: #dddcdc;
+    margin-top:1rem;
+}

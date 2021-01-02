@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Castoro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap');
 
 *{ box-sizing: border-box; }
 
@@ -98,4 +98,26 @@ body::-webkit-scrollbar-track {
    
 body::-webkit-scrollbar-thumb {
     background-color: rgba(169, 169, 169, 0.5);
+}
+
+/* ======================================================== */
+/* ===================== MEDIA QUERIES ==================== */
+/* ======================================================== */
+
+@media (max-width: 700px){
+    main #content{
+        width: 90%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 600px){
+    main #content{
+        width: 100%;
+        position: relative;
+        left: 0;
+        transform: translateX(0);
+    }
 }

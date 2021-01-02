@@ -21,8 +21,9 @@ app.use(express.static(path.join(__dirname, '/public')));
 // ROUTES
 app.use(limiter);
 app.use('/', require('./routes/root'));
-app.use('/artigos', require('./routes/articles'));
-app.use('/api', require('./routes/api'));
+app.use('/edit/', require('./routes/edit'));
+app.use('/artigos/', require('./routes/articles'));
+app.use('/api/', require('./routes/api'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {console.log('\x1b[32m%s\x1b[0m', `Server on at ${port}`)});

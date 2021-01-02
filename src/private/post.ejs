@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Article</title>
+
+    <link rel="stylesheet" href="../styles/article.css">
+    <link rel="stylesheet" href="../styles/solo-article.css">
+
+    <link rel="stylesheet" href="../styles/edit.css">
+</head>
+<body>
+    <div id="result-box">
+    </div>
+
+    <main>
+        <form method="post">
+            <input type="text" name="title" placeholder="Título" required>
+            
+            <label for="tags">Tags</label>
+            <input type="text" name="tags">
+            
+            <label for="banner">Banner</label>
+            <input type="text" name="banner">
+            <div class="img"></div>
+            <input type="button" onclick="updateBanner()" value="Fetch img"><br><br>
+
+            <label for="description">Descrição</label>
+            <textarea name="description" required></textarea>
+
+            <label for="markdown">Corpo</label>
+            <textarea name="markdown" required></textarea>
+            <input type="button" onclick="previewBody()" value="Renderizar Corpo">
+            
+            <button type="submit">POST</button> <br>
+        </form>
+
+        <section id="body-preview">
+            <div class="spacer"></div>
+            <article style="margin-top:1rem">
+
+            </article>
+        </section>
+    </main>
+
+    <script>
+        const desc = document.querySelector('textarea[name="description"]');
+        const mark = document.querySelector('textarea[name="markdown"]');
+        const form = document.querySelector('form');
+
+        desc.oninput = function() {
+            desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+        };
+        mark.oninput = function() {
+            mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+        };
+
+        function updateBanner(){
+            const url = document.querySelector('input[name="banner"]').value;
+            document.querySelector('.img').style.backgroundImage = `url(${url})`;
+        }
+    
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            
+            const data = {
+                title: formData.get('title'),
+                tags: formData.get('tags').split(','),
+                banner: formData.get('banner'),
+                description: formData.get('description'),
+                markdown: formData.get('markdown'),
+            };
+
+            const req = {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                credentials: "same-origin",
+                body:JSON.stringify(data)
+            };
+
+            sendRequest(req);
+        });
+
+        async function previewBody(){
+            const data = {
+                markdown: document.querySelector('textarea[name="markdown"]').value,
+            };
+
+            const req = {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                credentials: "same-origin",
+                body:JSON.stringify(data)
+            };
+
+            const res = await fetch('/api/markdownPreview', req);
+            const json = await res.json();
+
+            document.querySelector('#body-preview article').innerHTML = json.data;
+        }
+
+        async function sendRequest(request){
+            const res = await fetch('/api/article', request);
+            const json = await res.json();
+            messageBox(json.message);
+        }
+
+        function messageBox(msg){
+            const resultDiv = document.createElement('div');
+            resultDiv.classList.add("msg-box");
+            resultDiv.innerText = msg;
+            document.querySelector('#result-box').appendChild(resultDiv);
+
+            setTimeout(() => {
+                resultDiv.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -10,8 +10,7 @@ const { generate } = require('generate-password');
 
 router.get('/', async (req, res) => {
     try{
-        //const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).limit(10).exec();
-        const articles = await Article.find({}).exec();
+        const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).exec();
         return res.render(path.join(__dirname, '../public/views/home'), {tagFilter: '',articles: articles});
     }catch(err){
         return res.status(500).render(path.join(__dirname, '../public/views/http-error'), {code: '500', message:"Algo de errado ocorreu no Servidor 😦"});

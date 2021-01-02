@@ -20,6 +20,7 @@
         <div class="bmask">
             <div id="content">
                 <article>
+                    <section class="content-padding">
                     <h1><%= data.title %></h1>
                     <h2 class="time-text"><%= data.createDate.formated %></h2>
 
@@ -31,7 +32,6 @@
 
                     <section>
                         <p><%= data.description %></p>
-
                         <div>
                             <%- data.HTMLcontent %>
                         </div>
@@ -40,6 +40,7 @@
                     <% if(data.createDate.formated != data.updateDate.formated){ %>
                         <h2 class="time-text">Editado: <%= data.updateDate.formated %></h2>
                     <% } %>
+                    </section>
                 </article>
             </div>
         </div>
