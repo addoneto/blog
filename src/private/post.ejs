@@ -49,11 +49,18 @@
         const mark = document.querySelector('textarea[name="markdown"]');
         const form = document.querySelector('form');
 
+        desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+        mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+
         desc.oninput = function() {
+            const scrollTop  = window.pageYOffset;
             desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+            window.scrollTo(0, scrollTop);
         };
         mark.oninput = function() {
+            const scrollTop  = window.pageYOffset;
             mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+            window.scrollTo(0, scrollTop);
         };
 
         function updateBanner(){

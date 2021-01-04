@@ -18,8 +18,8 @@ header{
 .bmask{
     width: 100%;
     height: fit-content;
-    background-color: white;
-    margin-top: 600px;
+    /* background-color: white;
+    margin-top: 600px; */
     padding-top:1rem ;
 }
 

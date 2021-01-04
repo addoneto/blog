@@ -15,9 +15,15 @@
     </header>
 
     <main>
-        <div id="t-banner" style="background-image: url(<%- data.banner %>)"></div>
-    
-        <div class="bmask">
+        <% if(data.banner){ %>
+            <div id="t-banner" style="background-image: url(<%- data.banner %>)"></div>
+        <% } %>
+
+        <% if(data.banner) { %>
+        <div class="bmask" style="margin-top:600px; background-color:white;">
+        <% } else { %>
+        <div class="bmask" style="margin-top:0px; background-color:transparent;">
+        <% }  %>
             <div id="content">
                 <article>
                     <section class="content-padding">

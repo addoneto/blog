@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDIT: <%= article.title %></title>
 
+    <link rel="stylesheet" href="../styles/article.css">
+    <link rel="stylesheet" href="../styles/solo-article.css">
+
     <link rel="stylesheet" href="../styles/edit.css">
 </head>
 <body onload="start()">
@@ -28,6 +31,7 @@
 
             <label for="markdown">Corpo</label>
             <textarea name="markdown" required><%- article.markdown %></textarea>
+            <input type="button" onclick="previewBody()" value="Renderizar Corpo">
 
             <label for="id">ID</label>
             <input type="text" name="id" required>
@@ -37,6 +41,13 @@
             <input type="checkbox" id="check-del" style="width: fit-content;margin-top:4rem">
             <input type="button" onclick="deleteArticle()" value="DELETE" id="delete-btn">
         </form>
+
+        <section id="body-preview">
+            <div class="spacer"></div>
+            <article style="margin-top:1rem">
+
+            </article>
+        </section>
     </main>
 
     <script>
@@ -46,13 +57,20 @@
 
         function start(){
             document.querySelector('input[name="id"]').value = window.location.pathname.slice(6);
+
+            desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+            mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
         }
 
         desc.oninput = function() {
+            const scrollTop  = window.pageYOffset;
             desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
+            window.scrollTo(0, scrollTop);
         };
         mark.oninput = function() {
+            const scrollTop  = window.pageYOffset;
             mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+            window.scrollTo(0, scrollTop);
         };
 
         function updateBanner(){
@@ -100,6 +118,24 @@
             const res = await fetch('/api/article', request);
             const json = await res.json();
             messageBox(json.message);
+        }
+
+        async function previewBody(){
+            const data = {
+                markdown: mark.value,
+            };
+
+            const req = {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                credentials: "same-origin",
+                body:JSON.stringify(data)
+            };
+
+            const res = await fetch('/api/markdownPreview', req);
+            const json = await res.json();
+
+            document.querySelector('#body-preview article').innerHTML = json.data;
         }
 
         function messageBox(msg){
