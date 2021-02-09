@@ -2,5 +2,5 @@
     "httpOnly":true,
     "maxAge": 20000,
     "sameSite": "strict",
-    "secure": true
+    "secure": false
 }
