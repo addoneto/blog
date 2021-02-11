@@ -8,10 +8,12 @@ const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const dompurify = createDOMPurify(new JSDOM().window);
 
+const moment = require('moment-timezone');
+
 const DateSchema = new mongoose.Schema({
     complete: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     formated: String,
 });
@@ -62,16 +64,19 @@ ArticleSchema.pre('save', function(){
     this.HTMLcontent = dompurify.sanitize(marked(this.markdown));
     if(!this.description) this.description = this.markdown.split('\n')[0];
 
-    this.createDate.formated = dateFormater.ptFormat(this.createDate.complete);
-    this.updateDate.formated = dateFormater.ptFormat(this.updateDate.complete);
+    // this.createDate.formated = moment().utc().format('dddd, DD/MM/YYYY hh:mm');
+    // this.updateDate.formated = moment().utc().format('dddd, DD/MM/YYYY hh:mm');
+    this.updateDate.formated = moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm');
+    this.updateDate.formated = moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm');
 
     console.log('\x1b[36m%s\x1b[0m', "Article created! " + this._id)
 });
 
 ArticleSchema.pre('updateOne', function() {
-    const now = new Date();
-    this.set({updateDate: {complete: now }});
-    this.set({updateDate: {formated: dateFormater.ptFormat(now) }});
+    this.set({updateDate: {complete: new Date() }});
+    // this.set({updateDate: {formated: moment().utc().format('dddd, DD/MM/YYYY hh:mm') }});
+    this.set({updateDate: {formated: moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm') }});
+    
 
     console.log('\x1b[35m%s\x1b[0m', 'Article updated! ' + this._conditions._id);
 });
