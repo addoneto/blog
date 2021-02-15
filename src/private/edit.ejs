@@ -62,6 +62,21 @@
             mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
         }
 
+        // https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
+        document.querySelector('textarea[name="markdown"]').addEventListener('keydown', function(event) {
+            if(event.keyCode===9){
+                event.preventDefault();
+
+                let v = this.value,
+                s = this.selectionStart,
+                e = this.selectionEnd;
+
+                this.value = v.substring(0, s) + ' ' + v.substring(e);
+                this.selectionStart = this.selectionEnd = s + 1; 
+                return false;
+            }
+        });
+
         desc.oninput = function() {
             const scrollTop  = window.pageYOffset;
             desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
@@ -93,6 +108,12 @@
                 id: formData.get('id'),
             };
 
+            for(let i = 0; i < data.tags.length; i++){
+                if(data.tags[i] == ''){
+                    data.tags.splice(i, 1);
+                }
+            }
+
             const req = {
                 method: 'PUT',
                 headers: {'Content-Type':'application/json'},
@@ -117,6 +138,9 @@
         async function sendRequest(request){
             const res = await fetch('/api/article', request);
             const json = await res.json();
+
+            console.log(request);
+
             messageBox(json.message);
         }
 

@@ -27,7 +27,7 @@
             <input type="button" onclick="updateBanner()" value="Fetch img"><br><br>
 
             <label for="description">Descrição</label>
-            <textarea name="description" required></textarea>
+            <textarea name="description"></textarea>
 
             <label for="markdown">Corpo</label>
             <textarea name="markdown" required></textarea>
@@ -51,6 +51,21 @@
 
         desc.style.height = ""; desc.style.height = desc.scrollHeight + "px";
         mark.style.height = ""; mark.style.height = mark.scrollHeight + "px";
+
+        // https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
+        document.querySelector('textarea[name="markdown"]').addEventListener('keydown', function(event) {
+            if(event.keyCode===9){
+                event.preventDefault();
+
+                let v = this.value,
+                s = this.selectionStart,
+                e = this.selectionEnd;
+
+                this.value = v.substring(0, s) + ' ' + v.substring(e);
+                this.selectionStart = this.selectionEnd = s + 1; 
+                return false;
+            }
+        });
 
         desc.oninput = function() {
             const scrollTop  = window.pageYOffset;
@@ -80,6 +95,12 @@
                 description: formData.get('description'),
                 markdown: formData.get('markdown'),
             };
+
+            for(let i = 0; i < data.tags.length; i++){
+                if(data.tags[i] == ''){
+                    data.tags.splice(i, 1);
+                }
+            }
 
             const req = {
                 method: 'POST',

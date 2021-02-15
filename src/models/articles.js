@@ -66,8 +66,8 @@ ArticleSchema.pre('save', function(){
 
     // this.createDate.formated = moment().utc().format('dddd, DD/MM/YYYY hh:mm');
     // this.updateDate.formated = moment().utc().format('dddd, DD/MM/YYYY hh:mm');
-    this.updateDate.formated = moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm');
-    this.updateDate.formated = moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm');
+    this.createDate.formated = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm');
+    this.updateDate.formated = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm');
 
     console.log('\x1b[36m%s\x1b[0m', "Article created! " + this._id)
 });
@@ -75,7 +75,7 @@ ArticleSchema.pre('save', function(){
 ArticleSchema.pre('updateOne', function() {
     this.set({updateDate: {complete: new Date() }});
     // this.set({updateDate: {formated: moment().utc().format('dddd, DD/MM/YYYY hh:mm') }});
-    this.set({updateDate: {formated: moment().tz('America/Sao_Paulo').format('dddd, DD/MM/YYYY hh:mm') }});
+    this.set({updateDate: {formated: moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm') }});
     
 
     console.log('\x1b[35m%s\x1b[0m', 'Article updated! ' + this._conditions._id);

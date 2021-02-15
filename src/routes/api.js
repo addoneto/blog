@@ -62,9 +62,9 @@ router.put('/article', async (req, res) => {
     };
 
     // remove information not provided so they're not updated as null
-    for (let prop in changeAtributes) {
-        if(!changeAtributes[prop]) delete changeAtributes[prop];
-    }
+    // for (let prop in changeAtributes) {
+    //     if(changeAtributes[prop] === null) delete changeAtributes[prop];
+    // }
 
     changeAtributes.slug = slugify(changeAtributes.title, {lower:true, strict: true});
     changeAtributes.HTMLcontent = dompurify.sanitize(marked(changeAtributes.markdown));

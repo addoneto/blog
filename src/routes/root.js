@@ -5,12 +5,14 @@ const path = require('path');
 const Article = require('../models/articles');
 
 const cookie = require('cookie');
-const sessionSettings = require('../cookieSettings');
+let sessionSettings = require('../cookieSettings');
+if (process.env.NODE_ENV !== 'production') sessionSettings["secure"] = false;
+
 const { generate } = require('generate-password');
 
 router.get('/', async (req, res) => {
     try{
-        const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).exec();
+        const articles = await Article.find({}, {}, { sort: { 'createDate':  -1 } }).exec(); // limit?
         return res.render(path.join(__dirname, '../public/views/home'), {tagFilter: '',articles: articles});
     }catch(err){
         return res.status(500).render(path.join(__dirname, '../public/views/http-error'), {code: '500', message:"Algo de errado ocorreu no Servidor 😦"});
